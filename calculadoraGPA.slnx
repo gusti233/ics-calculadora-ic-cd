@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="calculadora.App/calculadora.App.csproj" />
   <Project Path="calculadora.Core/calculadora.Core.csproj" />
+  <Project Path="calculadora.Tests/calculadora.Tests.csproj" /> 
 </Solution>
