@@ -1,7 +1,7 @@
 ﻿using calculadora.Core;
 
 class Ejecutable
-{
+    {
     static void Main(string[] args)
     {
         //Estudiante y cursos 
@@ -29,8 +29,8 @@ class Ejecutable
         int gradoC4 = gradeB; 
         int gradoC5 = gradeA; 
 
-        Console.WriteLine($"Student: {estudiante}\n"); 
-        Console.WriteLine("Course \t\t\t Grade \t\t Credit Hours"); 
+        Console.WriteLine($"Estudiante: {estudiante}\n"); 
+        Console.WriteLine("Curso \t\t\t Grade \t\t Horas de credito"); 
         Console.WriteLine($"{curso1}  \t\t {gradoC1} \t\t\t {creditoC1}"); 
         Console.WriteLine($"{curso2}  \t\t {gradoC2} \t\t\t {creditoC2}"); 
         Console.WriteLine($"{curso3}  \t\t {gradoC3} \t\t\t {creditoC3}"); 
@@ -56,6 +56,6 @@ class Ejecutable
         int firstDigit = (int)(prom_GP * 10) % 10; 
         int secondDigit = (int)(prom_GP * 100) % 10; 
 
-        Console.Write($"\nFinal GPA: {leadingDigit}.{firstDigit}{secondDigit}\n");
+        Console.Write($"\nFinal GPA: {leadingDigit}.{firstDigit}{secondDigit}\n"); // GPA correcto-->: 3.35
     }
 }
