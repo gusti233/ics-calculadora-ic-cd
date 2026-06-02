@@ -38,12 +38,22 @@ jobs:
         run: |
           New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
-      - name: Build, Test and analyze
+      - name: Iniciar SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
-        run: |
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"gusti233_ics-calculadora-ic-cd" /o:"gusti233" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-          dotnet build
-          dotnet test # <-- Ajuste 2: Ejecutamos SpecFlow para cumplir con SDD
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"gusti233_ics-calculadora-ic-cd" /o:"gusti233" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Compilar (Build)
+        run: dotnet build
+
+      - name: Pruebas (Test)
+        run: dotnet test
+
+      - name: Finalizar SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+
