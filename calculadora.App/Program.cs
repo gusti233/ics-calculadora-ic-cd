@@ -57,5 +57,8 @@ class Ejecutable
         int secondDigit = (int)(prom_GP * 100) % 10; 
 
         Console.Write($"\nFinal GPA: {leadingDigit}.{firstDigit}{secondDigit}\n"); // GPA correcto-->: 3.35
+
+        Console.WriteLine("\n --------------Prueba de entorno IC-----------"); 
+        
     }
 }
