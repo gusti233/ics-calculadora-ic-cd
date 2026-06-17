@@ -6,7 +6,7 @@ WORKDIR /src
 COPY ["calculadoraGPA.slnx", "./"]
 COPY ["calculadora.Core/calculadora.Core.csproj", "calculadora.Core/"]
 COPY ["calculadora.App/calculadora.App.csproj", "calculadora.App/"]
-COPY ["Calculadora.Tests/Calculadora.Tests.csproj", "calculadora.Tests/"]
+COPY ["calculadora.Tests/calculadora.Tests.csproj", "calculadora.Tests/"]
 RUN dotnet restore
 
 # Copiamos todo el resto del código y generamos el binario final (Publish)
