@@ -4,7 +4,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gusti233_ics-calculadora-ic-cd&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gusti233_ics-calculadora-ic-cd)
 
 ## 📝 Descripción
-Este proyecto es una Calculadora implementada en **.NET**, desarrollada como parte de las prácticas académicas de Ingeniería en Sistemas de Información. El objetivo principal de este repositorio es demostrar la implementación sólida de una arquitectura profesional de **Integración Continua (CI)** y **Entrega Continua (CD)**.
+Este proyecto es una Calculadora implementada en **.NET**, desarrollada como parte de las prácticas académicas de Ingeniería en Sistemas de Información, en la materia de Ingeniería y Calidad de Software. El objetivo principal de este repositorio es demostrar la implementación sólida de una arquitectura profesional de **Integración Continua (CI)** y **Entrega Continua (CD)**.
 
 ## 🚀 Tecnologías Utilizadas
 * **Lenguaje y Framework:** .NET / C#
