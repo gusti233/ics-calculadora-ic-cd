@@ -1,5 +1,5 @@
 # Etapa 1: Entorno de Construcción (SDK)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copiamos la solución y los proyectos para restaurar paquetes
