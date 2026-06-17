@@ -7,7 +7,9 @@ COPY ["calculadoraGPA.slnx", "./"]
 COPY ["calculadora.Core/calculadora.Core.csproj", "calculadora.Core/"]
 COPY ["calculadora.App/calculadora.App.csproj", "calculadora.App/"]
 COPY ["calculadora.Tests/calculadora.Tests.csproj", "calculadora.Tests/"]
-RUN dotnet restore
+
+# AJUSTE: Le indicamos explícitamente qué proyecto debe restaurar
+RUN dotnet restore "calculadora.App/calculadora.App.csproj"
 
 # Copiamos todo el resto del código y generamos el binario final (Publish)
 COPY . .
