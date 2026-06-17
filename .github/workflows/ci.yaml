@@ -47,3 +47,11 @@ jobs:
 
       - name: Construir Imagen Docker (CD)
         run: docker build -t calculadora-gpa:latest .
+
+        # --- NUEVO PASO: NOTIFICACIÓN A SLACK ---
+      - name: Notificar estado a Slack
+        if: always() # Esto asegura que el mensaje se mande aunque un paso anterior falle
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"*Pipeline de Calculadora finalizado* \nEstado de la ejecución: *${{ job.status }}* \nRama: ${{ github.ref }}"}' \
+          ${{ secrets.SLACK_WEBHOOK }}
