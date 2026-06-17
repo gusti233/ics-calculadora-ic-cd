@@ -3,14 +3,14 @@ on:
   push:
     branches:
       - main
-      - feature/testing-sdd
       - feature/cd-docker 
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Build and analyze
-    runs-on: ubuntu-latest # Cambiamos a ubuntu-latest porque compilar Docker en Linux es mucho más rápido y estándar
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout del código
@@ -24,24 +24,15 @@ jobs:
           java-version: 17
           distribution: 'zulu' 
 
-      - name: Cache de herramientas de SonarQube
-        id: cache-sonar-scanner
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
+      # AJUSTE: Instalación global directa (sin caché problemático)
       - name: Instalar SonarQube Cloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p ~/.sonar/scanner
-          dotnet tool update dotnet-sonarscanner --tool-path ~/.sonar/scanner
+        run: dotnet tool install --global dotnet-sonarscanner
 
+      # AJUSTE: Comando directo llamando a la herramienta global
       - name: Iniciar SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ~/.sonar/scanner/dotnet-sonarscanner begin /k:"gusti233_ics-calculadora-ic-cd" /o:"gusti233" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: dotnet sonarscanner begin /k:"gusti233_ics-calculadora-ic-cd" /o:"gusti233" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Compilar (Build)
         run: dotnet build
@@ -52,7 +43,7 @@ jobs:
       - name: Finalizar SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ~/.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Construir Imagen Docker (CD)
         run: docker build -t calculadora-gpa:latest .
