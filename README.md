@@ -1,6 +1,6 @@
 # 🧮 Calculadora - Pipeline CI/CD
 
-[![Pipeline de CI/CD](https://github.com/gusti233/ics-calculadora-ic-cd/actions/workflows/ci.yml/badge.svg)](https://github.com/gusti233/ics-calculadora-ic-cd/actions)
+[![Pipeline IC y SonarQube](https://github.com/gusti233/ics-calculadora-ic-cd/actions/workflows/ci.yaml/badge.svg)](https://github.com/gusti233/ics-calculadora-ic-cd/actions/workflows/ci.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gusti233_ics-calculadora-ic-cd&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gusti233_ics-calculadora-ic-cd)
 
 ## 📝 Descripción
