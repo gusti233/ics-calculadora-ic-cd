@@ -10,3 +10,4 @@ Scenario: Calcular el GPA de Tomas Suarez
   And el estudiante obtuvo las siguientes calificaciones: 4, 3, 3, 3, 4
   When el sistema calcula el GPA final
   Then el resultado del GPA debe ser 3.35
+  
