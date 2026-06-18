@@ -1,15 +1,19 @@
-name: Pipeline IC y SonarQube
+name: Pipeline CI/CD - Calculadora GPA
+
 on:
   push:
     branches:
       - main
-      - feature/cd-docker 
+      - 'feature/**'
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches:
+      - main
 
 jobs:
-  build:
-    name: Build and analyze
+  #=======Trabajo 1: Integracion continua =======
+  # Se ejecuta siempre, en cualquier rama, para validar calidad.
+  integracion-continua:
+    name: Build, Test y Analisis
     runs-on: ubuntu-latest
 
     steps:
@@ -24,11 +28,9 @@ jobs:
           java-version: 17
           distribution: 'zulu' 
 
-      # --- AJUSTE: Instalación global directa (sin caché problemático) ---
       - name: Instalar SonarQube Cloud scanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      #--- AJUSTE: Comando directo llamando a la herramienta global ---
       - name: Iniciar SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -45,6 +47,34 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
+      # --- NOTIFICACIÓN DE SLACK (Detallada para IC) ---
+      - name: 📢 Notificación de Slack (IC)
+        if: always() # Asegura que el mensaje se mande aunque un test falle
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: 'CI/CD Bot Guardián'
+          SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+          SLACK_TITLE: 'Reporte de Integración: ${{ job.status }}'
+          SLACK_MESSAGE: |
+            *Rama:* `${{ github.ref_name }}`
+            *Autor:* ${{ github.actor }}
+            *Commit:* ${{ github.event.head_commit.message }}
+            *Acción:* ${{ job.status == 'success' && 'Código verificado correctamente.' || 'Fallo detectado. Revisar logs en GitHub Actions.' }}
+
+  # =======Trabajo 2: Entrega Continua (CD)=======
+  # Solo se ejecuta en MAIN y si el trabajo de IC fue exitoso.
+  entrega-continua:
+    name: Empaquetado en Docker Hub
+    needs: integracion-continua # Obliga a esperar a que el Job 1 termine en verde
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # EL CANDADO DE SEGURIDAD 🔒
+
+    steps:
+      # Como es un entorno nuevo (runner distinto), hay que volver a hacer checkout
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
       - name: Construir Imagen Docker
         run: docker build -t calculadora-gpa:latest .
 
@@ -56,10 +86,16 @@ jobs:
           docker tag calculadora-gpa:latest ${{ secrets.DOCKER_USERNAME }}/calculadora-gpa:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/calculadora-gpa:latest
 
-      # --- NOTIFICACIÓN A SLACK ---
-      - name: Notificar estado a Slack
-        if: always() # Esto asegura que el mensaje se mande aunque un paso anterior falle
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"*Pipeline de Calculadora finalizado* \nEstado de la ejecución: *${{ job.status }}* \nRama: ${{ github.ref }}"}' \
-          ${{ secrets.SLACK_WEBHOOK }}
+      # --- Otra notificacion de slack (Exclusiva para entregas exitosas) ---
+      - name: 🚀 Notificación de Despliegue Exitoso
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_USERNAME: 'Release Manager'
+          SLACK_COLOR: '#2496ED'
+          SLACK_TITLE: '¡Nueva versión desplegada en Docker Hub! 🐳'
+          SLACK_MESSAGE: |
+            *Imagen:* `${{ secrets.DOCKER_USERNAME }}/calculadora-gpa:latest`
+            *Origen:* Rama `main`
+            *Comando de instalación:* `docker pull ${{ secrets.DOCKER_USERNAME }}/calculadora-gpa:latest`
