@@ -24,11 +24,11 @@ jobs:
           java-version: 17
           distribution: 'zulu' 
 
-      # AJUSTE: Instalación global directa (sin caché problemático)
+      # --- AJUSTE: Instalación global directa (sin caché problemático) ---
       - name: Instalar SonarQube Cloud scanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      # AJUSTE: Comando directo llamando a la herramienta global
+      #--- AJUSTE: Comando directo llamando a la herramienta global ---
       - name: Iniciar SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
