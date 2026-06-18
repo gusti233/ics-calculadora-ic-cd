@@ -23,6 +23,10 @@ El pipeline automatizado (`ci.yml`) realiza las siguientes tareas en cada actual
 5. **Despliegue:** Sube la imagen a Docker Hub de manera pública.
 6. **Notificación:** Envía una alerta al canal de Slack indicando el resultado.
 
+**Entorno de IC**
+<img width="1186" height="484" alt="Slide - Entorno de IC" src="https://github.com/user-attachments/assets/d976ffa4-3168-46f6-8cfb-249d09563a17" />
+
+
 ## 📦 Cómo ejecutar con Docker
 Puedes descargar y ejecutar la última versión estable de esta calculadora desde Docker Hub utilizando estos comandos:
 
