@@ -31,6 +31,5 @@ docker pull gusti233/calculadora-gpa:latest
 docker run -it gusti233/calculadora-gpa:latest
 ```
 
-## 👨‍💻 Autor
-**Tomás Suárez**
-Estudiante de 4to año - Ingeniería en Sistemas de Información
+## 👨‍💻
+**Suárez Zeniquel, Tomas**
